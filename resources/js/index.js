@@ -1,3 +1,4 @@
+import { Hangman } from "./Hangman";
 // START + DIFFICULTY SELECTION
 const startWrapper = document.getElementById(`startWrapper`);
 const difficultySelectForm = document.getElementById(`difficultySelect`);
@@ -20,6 +21,7 @@ let canvas = document.getElementById(`hangmanCanvas`);
 
 // The following Try-Catch Block will catch the errors thrown
 try {
+  let game = new Hangman(canvas);
   // Instantiate a game Object using the Hangman class.
 
   // add a submit Event Listener for the to the difficultySelectionForm
@@ -29,7 +31,13 @@ try {
   //       2. show the gameWrapper
   //       3. call the game getWordHolderText and set it to the wordHolderText
   //       4. call the game getGuessessText and set it to the guessesText
-  difficultySelectForm.addEventListener(`submit`, function (event) {});
+  difficultySelectForm.addEventListener(`submit`, function (event) {
+    game.start(this.difficultySelect);
+    this.startWrapper.hide();
+    this.gameWrapper.show();
+    this.wordHolderText = game.getWordHolderText();
+    this.guessesText = game.getGuessesText();
+  });
 
   // add a submit Event Listener to the guessForm
   //    get the guess input
@@ -44,12 +52,23 @@ try {
   //      2. disable the guessButton
   //      3. show the resetGame button
   // if the game is won or lost, show an alert.
-  guessForm.addEventListener(`submit`, function (e) {});
+  guessForm.addEventListener(`submit`, function (e) {
+    let guess = game.getGuessesText();
+    game.guess();
+    this.wordHolderText = game.getWordHolderText();
+    this.guessesText = game.getGuessesText();
+    this.guessInput.disable();
+    this.guessButton.diable();
+    this.resetGame.show();
+  });
 
   // add a click Event Listener to the resetGame button
   //    show the startWrapper
   //    hide the gameWrapper
-  resetGame.addEventListener(`click`, function (e) {});
+  resetGame.addEventListener(`click`, function (e) {
+    this.startWrapper.show();
+    this.gameWrapper.hide();
+  });
 } catch (error) {
   console.error(error);
   alert(error);
